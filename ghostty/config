@@ -1,0 +1,46 @@
+# --- Appearance (Minimalist Grey) ---
+# This sets a dark grey background and off-white text manually
+# background = 282c34
+# foreground = abb2bf
+
+cursor-color = abb2bf
+
+# Match the 'Ruby Slate' background
+background = #282c34
+foreground = #dcdfe4
+
+# Match the 'Berry' selection color
+selection-background = #be123c
+selection-foreground = #ffffff
+
+# Clean up the window
+window-title-font-family = "JetBrainsMono Nerd Font"
+window-colorspace = display-p3
+
+# --- Typography ---
+# --- Typography ---
+# Use the exact name installed in Font Book
+font-family = "JetBrainsMono Nerd Font"
+font-size = 14
+
+# Enable ligatures for that sleek dev look
+font-feature = +calt
+font-feature = +liga
+
+# --- Cursor ---
+# Correct syntax for Ghostty 1.0+
+cursor-style = block
+cursor-style-blink = false
+
+# Prevents the shell from making the cursor blink
+shell-integration-features = no-cursor
+
+# --- Performance ---
+# Ensures the best rendering on your Mac Studio
+font-thicken = true
+
+# --- Appearance Fix ---
+window-padding-x = 10
+window-padding-y = 8
+macos-titlebar-proxy-icon = hidden
+

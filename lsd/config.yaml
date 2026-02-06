@@ -1,0 +1,17 @@
+# lsd configuration
+classic: false
+blocks:
+  - permission
+  - user
+  - group
+  - size
+  - date
+  - name
+color:
+  when: always
+  theme: custom # This tells lsd to read colors.yaml
+date: relative
+icons:
+  when: always
+  theme: fancy
+  separator: " "

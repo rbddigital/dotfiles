@@ -1,0 +1,38 @@
+user: 230
+group: 187
+permission:
+  read: dark_green
+  write: dark_yellow
+  exec: "#be123c"        # Berry Red
+  exec-sticky: "#991b1b" # Ruby Red
+  no-access: 245
+  octal: 6
+  acl: dark_cyan
+  context: cyan
+date:
+  hour-old: "#be123c"    # Berry Red
+  day-old: "#991b1b"     # Ruby Red
+  older: "#5c6370"       # Slate Grey
+size:
+  none: 245
+  small: "#dcdfe4"
+  medium: "#61afef"
+  large: "#be123c"
+inode:
+  valid: 13
+  invalid: 245
+links:
+  valid: 13
+  invalid: 245
+tree-edge: "#3e4452"
+git-status:
+  default: 245
+  unmodified: 245
+  ignored: 245
+  new-in-index: dark_green
+  new-in-workdir: dark_green
+  typechange: dark_yellow
+  deleted: "#e06c75"
+  renamed: dark_green
+  modified: "#be123c"
+  conflicted: "#991b1b"

@@ -1,0 +1,16 @@
+[core]
+	excludesfile = /Users/rafal/.gitignore_global
+[user]
+	email = hello@rbd.digital
+	name = RBD Digital
+[color]
+	ui = true
+[color "status"]
+	added = green bold
+	changed = "#be123c bold"
+	untracked = "#5c6370"
+[color "diff"]
+	meta = "#5c6370"
+	frag = magenta bold
+	new = green bold
+	old = "#991b1b bold"
