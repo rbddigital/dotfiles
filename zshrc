@@ -9,13 +9,13 @@ alias gs='git status'
 alias ga='git add'
 alias gaa='git add -A'
 alias gc='git commit -m'
-alias gcam='git add -A && git commit -m'  # Stage all and commit in one go
-alias gca='git commit --amend'             # Fix the last commit message
+alias gcam='git add -A && git commit -m' # Stage all and commit in one go
+alias gr='git commit --amend -m'         # Fix the last commit message
 alias gp='git push'
 alias gpl='git pull'
 alias gd='git diff'
 alias gco='git checkout'
-alias gcb='git checkout -b'                # Create and switch to new branch
+alias gcb='git checkout -b'               # Create and switch to new branch
 alias gb='git branch'
 alias gundo='git reset --soft HEAD~1'     # Undo last commit but keep changes staged
 
