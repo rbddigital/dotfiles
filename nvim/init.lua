@@ -741,33 +741,6 @@ vim.lsp.config("*", {
 	capabilities = require("blink.cmp").get_lsp_capabilities(),
 })
 
--- ── Solargraph (Ruby) ───────────────────────────────────────────────────────
--- Uses the rbenv shim so it picks up your project's Ruby version
--- and the correct Solargraph gem version.
--- Prerequisites:
---   gem install solargraph solargraph-rails
---   solargraph config          (generates .solargraph.yml)
-vim.lsp.config("solargraph", {
-	cmd = { os.getenv("HOME") .. "/.rbenv/shims/solargraph", "stdio" },
-	filetypes = { "ruby" },
-	root_markers = { "Gemfile", ".git" },
-	init_options = { formatting = false }, -- let conform handle formatting
-	settings = {
-		solargraph = {
-			diagnostics = true,
-			completion = true,
-			hover = true,
-			references = true,
-			rename = true,
-			symbols = true,
-			definitions = true,
-			folding = true,
-			useBundler = false, -- set to true if you prefer `bundle exec solargraph`
-		},
-	},
-})
-
--- ── Lua LS (for editing Neovim config) ──────────────────────────────────────
 vim.lsp.config("lua_ls", {
 	cmd = { "lua-language-server" },
 	filetypes = { "lua" },
@@ -785,25 +758,105 @@ vim.lsp.config("lua_ls", {
 	},
 })
 
-vim.lsp.enable({ "solargraph", "lua_ls" })
+-- Ruby LSP (for code actions + RuboCop integration)
+vim.lsp.config("ruby_lsp", {
+	cmd = { "bundle", "exec", "ruby-lsp" },
+	filetypes = { "ruby" },
+
+	root_dir = function(bufnr, on_dir)
+		local fname = vim.api.nvim_buf_get_name(bufnr)
+		if fname == "" then
+			on_dir(vim.fn.getcwd())
+			return
+		end
+		local root = vim.fs.root(bufnr, { "Gemfile", ".git", ".ruby-version" })
+		on_dir(root or vim.fn.getcwd())
+	end,
+
+	cmd_env = { RUBYOPT = "", BUNDLE_GEMFILE = nil },
+
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+
+	init_options = {
+		formatter = "rubocop", -- Keep RuboCop for formatting/code actions
+
+		-- Disable diagnostics server-side (stops ruby-lsp from publishing them)
+		enabledFeatures = {
+			diagnostics = true,
+			-- Keep everything else enabled (code actions, etc.)
+			codeActions = true,
+			completion = true,
+			definition = true,
+			documentHighlights = true,
+			documentLink = true,
+			documentSymbols = true,
+			folding = true,
+			hover = true,
+			inlayHints = true,
+			references = true,
+			rename = true,
+			selectionRange = true,
+			semanticHighlighting = true,
+			signatureHelp = true,
+		},
+	},
+})
+
+-- ── Solargraph (Ruby) ───────────────────────────────────────────────────────
+-- Uses the rbenv shim so it picks up your project's Ruby version
+-- and the correct Solargraph gem version.
+-- Prerequisites:
+--   gem install solargraph solargraph-rails
+--   solargraph config          (generates .solargraph.yml)
+vim.lsp.config("solargraph", {
+	cmd = { os.getenv("HOME") .. "/.rbenv/shims/solargraph", "stdio" },
+	filetypes = { "ruby" },
+	root_markers = { "Gemfile", ".git" },
+	init_options = { formatting = false }, -- let conform handle formatting
+	settings = {
+		solargraph = {
+			diagnostics = false,
+			codeActions = false,
+			completion = true,
+			definition = true,
+			documentHighlights = true,
+			documentLink = true,
+			documentSymbols = true,
+			folding = true,
+			hover = true,
+			inlayHints = true,
+			references = true,
+			rename = true,
+			selectionRange = true,
+			semanticHighlighting = true,
+			signatureHelp = true,
+			useBundler = false, -- set to true if you prefer `bundle exec solargraph`
+		},
+	},
+})
+
+vim.lsp.enable({ "solargraph", "ruby_lsp", "lua_ls" })
 
 -- ── LSP keymaps ──────────────────────────────────────
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 	callback = function(ev)
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
 		local map = function(mode, lhs, rhs, desc)
 			vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = "LSP: " .. desc })
 		end
 
+		-- Basic Mappings
 		map("n", "<leader>ld", vim.lsp.buf.definition, "Go to definition")
 		map("n", "<leader>lD", vim.lsp.buf.declaration, "Go to declaration")
 		map("n", "<leader>lr", vim.lsp.buf.references, "References")
 		map("n", "<leader>li", vim.lsp.buf.implementation, "Implementation")
 		map("n", "<leader>lh", vim.lsp.buf.hover, "Hover docs")
 		map("n", "<leader>ls", vim.lsp.buf.signature_help, "Signature help")
-		map("i", "<leader>ls", vim.lsp.buf.signature_help, "Signature help")
+		map("n", "<leader>ln", vim.lsp.buf.rename, "Rename symbol")
 		map("n", "<leader>la", vim.lsp.buf.code_action, "Code action")
-		map("n", "<leader>lr", vim.lsp.buf.rename, "Rename symbol")
+
+		-- Formatting (Conform)
 		map("n", "<leader>lf", function()
 			require("conform").format({ bufnr = ev.buf })
 		end, "Format buffer")
