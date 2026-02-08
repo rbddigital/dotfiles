@@ -158,6 +158,7 @@ cmd_abbrev("QA", "qa")
 cmd_abbrev("qA", "qa")
 
 -- Map wrapper
+---@diagnostic disable-next-line: duplicate-set-field
 function _G.map(mode, lhs, rhs, desc)
 	-- normalize mode value: allow "n" or { "n" }
 	if type(mode) == "table" and #mode == 1 then
@@ -171,6 +172,7 @@ function _G.map(mode, lhs, rhs, desc)
 	})
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function _G.lsp_map(bufnr, mode, lhs, rhs, desc)
 	vim.keymap.set(mode, lhs, rhs, {
 		noremap = true,
@@ -218,6 +220,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 
 -- ─── Bootstrap lazy.nvim ─────────────────────────────────────────────────────
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+---@diagnostic disable-next-line: undefined-field
 if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
