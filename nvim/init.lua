@@ -443,6 +443,21 @@ require("lazy").setup({
 	-- │  Statusline – lualine                        │
 	-- └──────────────────────────────────────────────┘
 	{
+		"zaldih/themery.nvim",
+		lazy = false,
+		config = function()
+			require("themery").setup({
+				themes = { "catppuccin", "tokyonight", "kanagawa", "gruvbox" }, -- Add yours here
+				livePreview = true,
+			})
+		end,
+	},
+
+	-- ┌──────────────────────────────────────────────┐
+	-- │  Statusline – lualine                        │
+	-- └──────────────────────────────────────────────┘
+
+	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		event = "VeryLazy",
@@ -652,6 +667,7 @@ require("lazy").setup({
 			{ "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document symbols" },
 			{ "<leader>fS", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace symbols" },
 			{ "<leader>fr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
+			{ "<leader>th", "<cmd>Telescope colorscheme enable_preview=true<cr>", desc = "Themes" },
 			{ "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Git commits" },
 			{ "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Git branches" },
 			{ "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "Git status" },
