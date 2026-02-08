@@ -300,7 +300,6 @@ require("lazy").setup({
 		priority = 1000,
 		config = function()
 			require("ghostty-default-style-dark").setup({})
-			vim.cmd.colorscheme("ghostty-default-style-dark")
 		end,
 	},
 
@@ -715,6 +714,10 @@ require("lazy").setup({
 	},
 	ui = { border = "rounded" },
 })
+
+-- Colorscheme theme
+-- vim.cmd.colorscheme("ghostty-default-style-dark")
+vim.cmd.colorscheme("zig")
 
 -- Custom Ruby-themed Highlights
 local set_hl = vim.api.nvim_set_hl

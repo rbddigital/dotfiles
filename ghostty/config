@@ -1,14 +1,14 @@
 # --- Appearance (Minimalist Grey) ---
 # This sets a dark grey background and off-white text manually
-cursor-color = abb2bf
+# cursor-color = abb2bf
 
 # Match the 'Ruby Slate' background
-background = #282c34
-foreground = #dcdfe4
+# background = #282c34
+# foreground = #dcdfe4
 
 # Match the 'Berry' selection color
-selection-background = #be123c
-selection-foreground = #ffffff
+# selection-background = #be123c
+# selection-foreground = #ffffff
 
 # Clean up the window
 window-title-font-family = "JetBrainsMono Nerd Font"
@@ -39,4 +39,6 @@ font-thicken = true
 window-padding-x = 8 
 window-padding-y = 8
 macos-titlebar-proxy-icon = hidden
+
+theme = Cobalt2
 
