@@ -4,6 +4,9 @@ alias la='lsd -la'
 alias lt='lsd --tree'
 alias c='clear'
 
+# Use curl but make it act like wget
+alias wget='curl -OC -'
+
 # --- Git Speed Suite ---
 alias gs='git status'
 alias ga='git add'
@@ -33,8 +36,16 @@ alias gbl='git branch --format="%(color:bold #be123c)%(refname:short)%(color:res
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# Ruby & Neovim
-export PATH="$HOME/.rbenv/bin:$HOME/Applications/nvim/bin:$PATH"
+# Ruby
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+# Applications
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/Applications/nvim/bin:$PATH"
+export PATH="$HOME/Applications/micro:$PATH"
+export PATH="$HOME/Applications/ripgrep:$PATH"
+export PATH="$HOME/Applications/fd:$PATH"
+
 eval "$(rbenv init - zsh)"
 
 . "$HOME/.cargo/env"

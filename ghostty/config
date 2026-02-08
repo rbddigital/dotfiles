@@ -17,7 +17,7 @@ window-colorspace = display-p3
 # --- Typography ---
 # Use the exact name installed in Font Book
 font-family = "JetBrainsMono Nerd Font"
-font-size = 14
+font-size = 15
 
 # Enable ligatures for that sleek dev look
 font-feature = +calt
