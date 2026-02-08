@@ -805,7 +805,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("n", "<leader>la", vim.lsp.buf.code_action, "Code action")
 		map("n", "<leader>lr", vim.lsp.buf.rename, "Rename symbol")
 		map("n", "<leader>lf", function()
-			vim.lsp.buf.format()
 			require("conform").format({ bufnr = ev.buf })
 		end, "Format buffer")
 	end,
