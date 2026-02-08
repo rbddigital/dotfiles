@@ -532,6 +532,29 @@ require("lazy").setup({
 	},
 
 	-- ┌──────────────────────────────────────────────┐
+	-- │  TailwindCSS plugins                         │
+	-- └──────────────────────────────────────────────┘
+	{
+		"brenoprata10/nvim-highlight-colors",
+		event = "VeryLazy",
+		config = function()
+			require("nvim-highlight-colors").setup({
+				render = "background", -- or "foreground" or "virtual"
+				enable_tailwind = true,
+			})
+		end,
+	},
+
+	{
+		"roobert/tailwindcss-colorizer-cmp.nvim",
+		config = function()
+			require("tailwindcss-colorizer-cmp").setup({
+				color_square_width = 2,
+			})
+		end,
+	},
+
+	-- ┌──────────────────────────────────────────────┐
 	-- │  LSP – Solargraph + lua_ls for Neovim config  │
 	-- └──────────────────────────────────────────────┘
 	-- nvim-lspconfig is still useful as a source of default configs
@@ -772,14 +795,9 @@ vim.lsp.config("ruby_lsp", {
 		local root = vim.fs.root(bufnr, { "Gemfile", ".git", ".ruby-version" })
 		on_dir(root or vim.fn.getcwd())
 	end,
-
 	cmd_env = { RUBYOPT = "", BUNDLE_GEMFILE = nil },
-
-	capabilities = require("blink.cmp").get_lsp_capabilities(),
-
 	init_options = {
 		formatter = "rubocop", -- Keep RuboCop for formatting/code actions
-
 		-- Disable diagnostics server-side (stops ruby-lsp from publishing them)
 		enabledFeatures = {
 			diagnostics = true,
@@ -803,8 +821,6 @@ vim.lsp.config("ruby_lsp", {
 })
 
 -- ── Solargraph (Ruby) ───────────────────────────────────────────────────────
--- Uses the rbenv shim so it picks up your project's Ruby version
--- and the correct Solargraph gem version.
 -- Prerequisites:
 --   gem install solargraph solargraph-rails
 --   solargraph config          (generates .solargraph.yml)
@@ -835,13 +851,66 @@ vim.lsp.config("solargraph", {
 	},
 })
 
-vim.lsp.enable({ "solargraph", "ruby_lsp", "lua_ls" })
+-- TOML → taplo (real TOML LSP)
+vim.lsp.config("taplo", {
+	cmd = { "taplo", "lsp", "stdio" },
+	filetypes = { "toml" },
+	root_dir = require("lspconfig.util").root_pattern("Cargo.toml", ".taplo.toml", ".git"),
+	single_file_support = true,
+	settings = {}, -- taplo uses its own config file (.taplo.toml)
+})
+
+-- TailwindCSS
+vim.lsp.config("tailwindcss", {
+	cmd = { "tailwindcss-language-server", "--stdio" },
+
+	filetypes = {
+		"html",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"eruby",
+	},
+
+	root_dir = vim.fs.root(0, {
+		"tailwind.config.js",
+		"tailwind.config.cjs",
+		"tailwind.config.mjs",
+		"package.json",
+	}),
+})
+
+vim.lsp.config("cssls", {
+	filetypes = { "css" },
+})
+
+vim.lsp.config("html", {
+	filetypes = { "html" },
+	settings = {
+		html = {
+			format = { indentInnerHtml = true },
+		},
+	},
+})
+
+vim.lsp.config("astro", {
+	cmd = { "astro-ls", "--stdio" },
+	filetypes = { "astro" },
+	root_markers = { "package.json", "astro.config.mjs", ".git" },
+	init_options = {
+		typescript = {}, -- Lets it auto-detect TS server path
+	},
+	single_file_support = true,
+})
+
+vim.lsp.enable({ "solargraph", "ruby_lsp", "lua_ls", "tailwindcss", "taplo", "html", "cssls", "astro" })
 
 -- ── LSP keymaps ──────────────────────────────────────
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 	callback = function(ev)
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		-- local client = vim.lsp.get_client_by_id(ev.data.client_id)
 		local map = function(mode, lhs, rhs, desc)
 			vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = "LSP: " .. desc })
 		end
