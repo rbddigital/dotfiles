@@ -610,6 +610,59 @@ require("lazy").setup({
 		lazy = true, -- loaded by vim.lsp.enable below
 	},
 
+	-- Start of dotnet
+	{
+		"seblyng/roslyn.nvim",
+		filetypes = "cs",
+		config = function()
+			local DLL_PATH = vim.fn.expand("~")
+				.. "/.local/share/nvim/lsp-servers/roslyn/Microsoft.CodeAnalysis.LanguageServer.dll"
+			local LOG_DIR = vim.fn.expand("~") .. "/.local/state/nvim/roslyn-lsp"
+
+			vim.lsp.config("roslyn", {
+				cmd = {
+					"dotnet",
+					DLL_PATH,
+					"--logLevel",
+					"Information",
+					"--stdio",
+					"--extensionLogDirectory",
+					LOG_DIR,
+				},
+				capabilities = vim.lsp.protocol.make_client_capabilities(),
+				settings = {
+					dotnet_enable_references_code_lens = true,
+					dotnet_enable_tests_code_lens = true,
+
+					-- Performance/Diagnostic Control (Recommended for stability)
+					["csharp.maxProjectFileCountForDiagnosticAnalysis"] = 250, -- Lower if you have a massive solution
+					["background_analysis.dotnet_compiler_diagnostics_scope"] = "openFiles",
+					["background_analysis.dotnet_analyzer_diagnostics_scope"] = "openFiles",
+
+					-- Completion Features
+					dotnet_show_completion_items_from_unimported_namespaces = true,
+
+					-- Inlay Hints (Note the nested table syntax required by some plugins)
+					["csharp|inlay_hints"] = {
+						csharp_enable_inlay_hints_for_implicit_object_creation = true,
+						csharp_enable_inlay_hints_for_implicit_variable_types = true,
+						csharp_enable_inlay_hints_for_lambda_parameter_types = true,
+						csharp_enable_inlay_hints_for_types = true,
+						dotnet_enable_inlay_hints_for_indexer_parameters = true,
+						dotnet_enable_inlay_hints_for_literal_parameters = true,
+						dotnet_enable_inlay_hints_for_object_creation_parameters = true,
+						dotnet_enable_inlay_hints_for_other_parameters = true,
+						dotnet_enable_inlay_hints_for_parameters = true,
+						dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
+						dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
+						dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
+					},
+				},
+			})
+		end,
+	},
+	-- End of dotnet
+
 	-- ┌──────────────────────────────────────────────┐
 	-- │  Completion – blink.cmp                      │
 	-- └──────────────────────────────────────────────┘
@@ -940,6 +993,29 @@ vim.lsp.config("html", {
 	},
 })
 
+local log_dir = vim.fn.stdpath("state") .. "/roslyn-logs"
+vim.fn.mkdir(log_dir, "p")
+
+-- Create proper capabilities so Roslyn sends Code Actions
+local caps = vim.lsp.protocol.make_client_capabilities()
+caps.textDocument.codeAction = {
+	dynamicRegistration = false,
+	codeActionLiteralSupport = {
+		codeActionKind = {
+			valueSet = {
+				"",
+				"quickfix",
+				"refactor",
+				"refactor.extract",
+				"refactor.inline",
+				"refactor.rewrite",
+				"source",
+				"source.organizeImports",
+			},
+		},
+	},
+}
+
 vim.lsp.config("astro", {
 	cmd = { "astro-ls", "--stdio" },
 	filetypes = { "astro" },
@@ -950,7 +1026,17 @@ vim.lsp.config("astro", {
 	single_file_support = true,
 })
 
-vim.lsp.enable({ "solargraph", "ruby_lsp", "lua_ls", "tailwindcss", "taplo", "html", "cssls", "astro" })
+vim.lsp.enable({
+	"solargraph",
+	"ruby_lsp",
+	"lua_ls",
+	"tailwindcss",
+	"taplo",
+	"html",
+	"cssls",
+	"astro",
+	-- "roslyn",
+})
 
 -- ── LSP keymaps ──────────────────────────────────────
 vim.api.nvim_create_autocmd("LspAttach", {
