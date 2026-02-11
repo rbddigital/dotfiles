@@ -812,6 +812,11 @@ require("lazy").setup({
 						".bundle/",
 						"ruby-lsp/",
 						"cache/",
+						"obj/",
+						".net8.0",
+						".net9.0",
+						".net10.0",
+						".DS_Store",
 					},
 					mappings = {
 						i = {

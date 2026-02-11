@@ -45,6 +45,7 @@ export PATH="$HOME/Applications/nvim/bin:$PATH"
 export PATH="$HOME/Applications/micro:$PATH"
 export PATH="$HOME/Applications/ripgrep:$PATH"
 export PATH="$HOME/Applications/fd:$PATH"
+export PATH="$HOME/.orbstack/bin:$PATH"
 
 eval "$(rbenv init - zsh)"
 

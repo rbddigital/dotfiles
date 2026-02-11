@@ -1,5 +1,6 @@
 [core]
 	excludesfile = /Users/rafal/.gitignore_global
+	autocrlf = input
 [user]
 	email = hello@rbd.digital
 	name = RBD Digital
