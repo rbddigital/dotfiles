@@ -3,6 +3,8 @@ alias l='lsd -l'
 alias la='lsd -la'
 alias lt='lsd --tree'
 alias c='clear'
+alias python='python3'
+alias pip='pip3'
 
 # Use curl but make it act like wget
 alias wget='curl -OC -'
@@ -39,12 +41,14 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Ruby
 export PATH="$HOME/.rbenv/bin:$PATH"
 
-# Applications
-export PATH="$HOME/.local/bin:$PATH"
+# Applications and Tools
 export PATH="$HOME/Applications/nvim/bin:$PATH"
 export PATH="$HOME/Applications/micro:$PATH"
 export PATH="$HOME/Applications/ripgrep:$PATH"
 export PATH="$HOME/Applications/fd:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.azure/bin:$PATH"
+export PATH="$HOME/.dotnet/tools:$PATH"
 export PATH="$HOME/.orbstack/bin:$PATH"
 
 eval "$(rbenv init - zsh)"
@@ -57,3 +61,6 @@ eval "$(starship init zsh)"
 # 'di' is directory, '01;38;5;160' is bold Ruby Red
 export LS_COLORS="di=01;38;5;160:ex=01;38;5;197"
 
+
+# Created by `pipx` on 2026-02-11 19:50:38
+export PATH="$PATH:/Users/rafal/Library/Python/3.13/bin"
