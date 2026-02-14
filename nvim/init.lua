@@ -79,8 +79,8 @@ opt.completeopt = { "menu", "menuone", "noselect" }
 opt.pumheight = 12
 
 -- Performance
-opt.updatetime = 250
-opt.timeoutlen = 300
+opt.updatetime = 150
+opt.timeoutlen = 200
 opt.lazyredraw = false
 
 -- Misc
